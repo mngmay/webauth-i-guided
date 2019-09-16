@@ -75,7 +75,7 @@ use the middleware to restrict access to GET /api/users endpoint
 */
 
 function validation(req, res, next) {
-  let { username, password } = req.body;
+  let { username, password } = req.headers;
 
   Users.findBy({ username })
     .first()
@@ -85,5 +85,8 @@ function validation(req, res, next) {
       } else {
         res.status(401).json({ message: "Invalid Credentials" });
       }
+    })
+    .catch(error => {
+      res.status(500).json(error);
     });
 }
